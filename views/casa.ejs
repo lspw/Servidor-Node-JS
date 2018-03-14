@@ -1,23 +1,51 @@
 <html>
+
 <head>
     <meta charset="utf-8" />
+    <!-- <meta http-equiv="refresh" content="1"> -->
     <title>Garagem</title>
+
+
+
+
+    <script type='text/javascript'>
+        function loadJSON() {
+            var xhr;
+            if (window.XMLHttpRequest) {
+                //IE7+, Firefox, Chrome, Opera, Safari
+                xhr = new XMLHttpRequest();
+            } else { //IE5, IE6
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            if (xhr) {
+                var url = "http://localhost:8080/garagem";
+                xhr.open("GET", url, true);
+                xhr.onreadystatechange = function () {
+                    if ((this.readyState === 4) && (this.status === 200)) {
+                        var jsonObj = JSON.parse(xhr.responseText);
+                        
+                        document.getElementsByName("test").innerHTML += jsonObj.luz;
+                    }
+                };
+                xhr.send();
+            }
+        }
+    </script>
+
+
 </head>
+
 <body>
+    <p>Luz: </p>
 
+    <span style="color:green">Ligado</span>
+    <span style="color:red">Desligado</span>
 
-<p>Luz:  </p> 
-    <span style="color:green">Ligado</span> 
-    <span style="color:red">Desligado</span> 
+    <p>Portão: </p>
 
-
-<p>Portão: </p>
-    <span style="color:green">Aberto</span> 
-    <span style="color:red">Fechado</span> 
-
-
-
-
+    <span style="color:green">Aberto</span>
+    <span style="color:red">Fechado</span>
 
 </body>
+
 </html>

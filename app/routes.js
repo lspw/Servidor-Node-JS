@@ -29,32 +29,49 @@ module.exports = function(app, passport) {
 	});
 
 	app.get('/garagem', function(req, res){
-
-		/*
-
-		var obj;
-		connection.query('SELECT valor FROM registovalores WHERE ID_SENSOR = 2 ORDER BY registovalores.TIMESTAMP DESC LIMIT 1;', function(err, result) {
-
+		
+		var obj = [];
+		//--------------------------------------------------------
+		// Ligação à BD + query para ligar/desligar luzes --------
+		//--------------------------------------------------------
+		connection.query('SELECT valor FROM registovalores WHERE ID_SENSOR = 2 ORDER BY registovalores.TIMESTAMP DESC LIMIT 1;', function(err, rows, fields){
 			if(err){
-				throw err;
-			} else {
-
-		connection.query('SELECT valor FROM registovalores WHERE ID_SENSOR = 1 ORDER BY registovalores.TIMESTAMP DESC LIMIT 1;', function(err, result2) {
-
-			if(err){
-				throw err;
-			} else {
-				obj = {port: result2, luz: result};
-				console.log(obj.result.data);
-				res.render('casa.ejs', obj);
+				console.log(err);
+			}
+			else{
+				for(var i = 0; i < rows.length; i++){
+					obj.push({luz: rows[i].valor});
+				}
+				
+				//console.log(fields);
 			}
 		});
-		connection.end();
-	}
-	
-});*/
 
-		//var obj;
+		//--------------------------------------------------------
+		// Ligação à BD + query para abrir/fechar portao ---------
+		//--------------------------------------------------------
+		connection.query('SELECT valor FROM registovalores WHERE ID_SENSOR = 1 ORDER BY registovalores.TIMESTAMP DESC LIMIT 1;', function(err, rows, fields){
+			if(err){
+				console.log(err);
+			}
+			else{
+				for(var i = 0; i < rows.length; i++){
+					obj.push({portao: rows[i].valor});
+				}
+				
+				var strJsonObj = JSON.stringify(obj);
+				
+				res.render('casa.ejs', obj);
+				
+
+				console.log(obj);
+				console.log(obj[0].luz);
+				console.log(obj[1]);
+
+				
+			}
+		});
+		
 });
 
 	// =====================================

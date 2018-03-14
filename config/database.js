@@ -5,5 +5,5 @@ module.exports = {
         'user': 'root',
         'password': ''
     },
-	'database': 'tpi'
+	'database': 'redes_sensores'
 };
